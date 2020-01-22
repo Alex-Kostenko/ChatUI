@@ -1,25 +1,48 @@
-import React from 'react';
+import React, {useState} from 'react';
+import classNames from 'classnames';
 import { createUseStyles } from 'react-jss';
-import './App.css';
-import { Layout } from 'antd';
-const { Header, Footer, Content } = Layout;
+import { Layout, Icon } from 'antd';
+import UserListChats from './components/UserListChats';
+import Chat from './components/Chat';
+
+const { Content } = Layout;
 
 const useStyles = createUseStyles({
   root: {
-    minHeight: 'calc(100vh - 140px)',
-    padding: '25px 50px '
-  }
+    minHeight: '100vh',
+    padding: '43px 50px',
+    width: '100%',
+    position: 'relative'
+  },
+  icon: {
+    position: 'absolute',
+    top: '15px',
+    left: '10px',
+
+    '& svg':{
+      width: '20px',
+      height: '20px'
+    }
+  },
 });
 
 const App = () => {
 
   const classes = useStyles();
 
+  const [isOpenSider, setIsOpenSider]= useState(false)
+
   return (
     <Layout>
-      <Header>Header</Header>
-      <Content className={classes.root}>Content</Content>
-      <Footer>Footer</Footer>
+      <UserListChats state={isOpenSider}/>
+      <Content className={classNames(classes.root)}>
+        <Icon
+          className={classNames(classes.icon, `trigger`)}
+          type={isOpenSider ? 'menu-unfold' : 'menu-fold'}
+          onClick={() => setIsOpenSider(!isOpenSider)}
+        />
+        <Chat />
+      </Content>
     </Layout>
   )
 };
